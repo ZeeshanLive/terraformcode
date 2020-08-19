@@ -1,5 +1,107 @@
 
 
+resource "aws_security_group" "vpn_sg" {
+  name        = "allow"
+  description = "Allow inbound traffic"
+  vpc_id      = var.appvpc
+
+  ingress {
+    description = "TLS from VPC"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.environment}-Db security group"
+  }
+}
+
+
+
+resource "aws_security_group" "DB_sg" {
+  name        = "allow"
+  description = "Allow inbound traffic"
+  vpc_id      = var.appvpc
+
+  ingress {
+    description = "TLS from VPC"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.environment}-Db security group"
+  }
+}
+
+resource "aws_security_group" "app_sg" {
+  name        = "allow"
+  description = "Allow inbound traffic"
+  vpc_id      = var.appvpc
+
+  ingress {
+    description = "TLS from VPC"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.environment}-app security group"
+  }
+}
+
+
+resource "aws_security_group" "DT_sg" {
+  name        = "allow"
+  description = "Allow inbound traffic"
+  vpc_id      = var.appvpc
+
+  ingress {
+    description = "TLS from VPC"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.environment}-DT security group"
+  }
+}
 
 
 resource "aws_security_group" "allow_albsg" {
@@ -27,9 +129,6 @@ resource "aws_security_group" "allow_albsg" {
   }
 }
 
-
-
-
 resource "aws_lb" "AppLoadBalancer" {
   name               = "${var.environment}-app-alb"
   internal           = true
@@ -54,6 +153,7 @@ resource "aws_launch_configuration" "AppLaunchconf" {
   name_prefix   = "${var.environment}-app-launch-configuaration"
   image_id      = var.appamiid
   instance_type = var.appinstancesize
+  security_groups = [aws_security_group.app_sg.id]
 
   lifecycle {
     create_before_destroy = true
@@ -104,6 +204,7 @@ resource "aws_instance" "vpn" {
   ami           = var.vpnami
   instance_type = var.vpninstancesize
   subnet_id = var.vpnsubnet
+  vpc_security_group_ids = [aws_security_group.vpn_sg.id]
 
   tags = {
     Name = "${var.environment}-vpn"
@@ -115,6 +216,7 @@ resource "aws_instance" "db" {
   ami           = var.dbami
   instance_type = var.dbinstancesize
   subnet_id = var.dbsubnet
+  vpc_security_group_ids = [aws_security_group.DB_sg.id]
 
   tags = {
     Name = "${var.environment}-db"
@@ -125,6 +227,7 @@ resource "aws_instance" "dt" {
   ami           = var.dtami
   instance_type = var.dtinstancesize
   subnet_id = var.dtsubnet
+  vpc_security_group_ids = [aws_security_group.DT_sg.id]
 
   tags = {
     Name = "${var.environment}-dt"
