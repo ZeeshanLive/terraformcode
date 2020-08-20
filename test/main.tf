@@ -41,3 +41,7 @@ output "az" {
 output "subnets" {
   value = module.networking.AppServerSubnets
 }
+
+output "test" {
+  value = module.networking.dtsubnet
+}
