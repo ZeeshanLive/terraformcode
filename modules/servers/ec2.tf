@@ -22,6 +22,7 @@ resource "aws_security_group" "vpn_sg" {
 
   tags = {
     Name = "${var.environment}-Db security group"
+    "Environment" = "${var.environment}"
   }
 }
 
@@ -49,6 +50,7 @@ resource "aws_security_group" "DB_sg" {
 
   tags = {
     Name = "${var.environment}-Db security group"
+    "Environment" = "${var.environment}"
   }
 }
 
@@ -74,6 +76,7 @@ resource "aws_security_group" "app_sg" {
 
   tags = {
     Name = "${var.environment}-app security group"
+    "Environment" = "${var.environment}"
   }
 }
 
@@ -100,6 +103,7 @@ resource "aws_security_group" "DT_sg" {
 
   tags = {
     Name = "${var.environment}-DT security group"
+    "Environment" = "${var.environment}"
   }
 }
 
@@ -126,6 +130,7 @@ resource "aws_security_group" "allow_albsg" {
 
   tags = {
     Name = "${var.environment}-alb security group"
+    "Environment" = "${var.environment}"
   }
 }
 
@@ -144,7 +149,7 @@ resource "aws_lb" "AppLoadBalancer" {
 
   tags = {
     Name = "${var.environment}-app-alb"
-    Environment = "production"
+    "Environment" = "${var.environment}"
   }
 }
 
@@ -208,7 +213,13 @@ resource "aws_instance" "vpn" {
 
   tags = {
     Name = "${var.environment}-vpn"
+    "Environment" = "${var.environment}"
   }
+}
+
+resource "aws_eip_association" "vpn_eip_assoc" {
+  instance_id   = aws_instance.vpn.id
+  allocation_id = var.vpneip
 }
 
 
@@ -220,6 +231,7 @@ resource "aws_instance" "db" {
 
   tags = {
     Name = "${var.environment}-db"
+    "Environment" = "${var.environment}"
   }
 }
 
@@ -231,5 +243,6 @@ resource "aws_instance" "dt" {
 
   tags = {
     Name = "${var.environment}-dt"
+    "Environment" = "${var.environment}"
   }
 }

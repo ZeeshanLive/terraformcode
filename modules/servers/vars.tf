@@ -57,3 +57,6 @@ variable dtinstancesize {
 }
 
 variable dtsubnet{}
+
+variable vpneip {
+}

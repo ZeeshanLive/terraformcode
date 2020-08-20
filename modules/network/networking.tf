@@ -66,6 +66,16 @@ resource "aws_eip" "nateip" {
   }
 }
 
+resource "aws_eip" "vpneip" {
+  vpc      = true
+
+  tags = {
+    Name = "${var.environment}-vpn-eip"
+    "Environment" = "${var.environment}"
+
+  }
+}
+
 resource "aws_nat_gateway" "natgw" {
   allocation_id = aws_eip.nateip.id
   subnet_id     = aws_subnet.appsubnet1.id
@@ -229,4 +239,8 @@ output "dtvpc" {
 
 output "dtsubnet" {
   value = aws_subnet.dtsubnet.id
+}
+
+output "vpneip" {
+  value = aws_eip.vpneip.id
 }

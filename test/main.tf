@@ -27,6 +27,7 @@ module "servers" {
   vpnami = "ami-05e16100b6f337dda"
   vpninstancesize = "t2.micro"
   vpnsubnet = module.networking.vpnsubnet
+  vpneip = module.networking.vpneip
   dbami = "ami-05e16100b6f337dda"
   dbinstancesize = "t2.micro"
   dbsubnet = module.networking.dbsubnet
