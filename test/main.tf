@@ -20,6 +20,7 @@ module "networking" {
 module "servers" {
   source = "../modules/servers"
   environment = "test"
+  keyname = "idv-test-key"
   appvpc= module.networking.appvpc
   appsubnets=module.networking.AppServerSubnets
   appamiid = "ami-0ed417ef057137c75"

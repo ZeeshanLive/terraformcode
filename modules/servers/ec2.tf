@@ -158,6 +158,7 @@ resource "aws_launch_configuration" "AppLaunchconf" {
   name_prefix   = "${var.environment}-app-launch-configuaration"
   image_id      = var.appamiid
   instance_type = var.appinstancesize
+  key_name = var.keyname
   security_groups = [aws_security_group.app_sg.id]
 
   lifecycle {
@@ -208,6 +209,7 @@ resource "aws_alb_listener" "app-alb-listener" {
 resource "aws_instance" "vpn" {
   ami           = var.vpnami
   instance_type = var.vpninstancesize
+  key_name = var.keyname
   subnet_id = var.vpnsubnet
   vpc_security_group_ids = [aws_security_group.vpn_sg.id]
 
@@ -227,6 +229,7 @@ resource "aws_instance" "db" {
   ami           = var.dbami
   instance_type = var.dbinstancesize
   subnet_id = var.dbsubnet
+  key_name = var.keyname
   vpc_security_group_ids = [aws_security_group.DB_sg.id]
 
   tags = {
@@ -238,6 +241,7 @@ resource "aws_instance" "db" {
 resource "aws_instance" "dt" {
   ami           = var.dtami
   instance_type = var.dtinstancesize
+  key_name = var.keyname
   subnet_id = var.dtsubnet
   vpc_security_group_ids = [aws_security_group.DT_sg.id]
 

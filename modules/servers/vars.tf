@@ -60,3 +60,8 @@ variable dtsubnet{}
 
 variable vpneip {
 }
+
+variable keyname{
+    type = string
+    default = "idv-test-key"
+}
